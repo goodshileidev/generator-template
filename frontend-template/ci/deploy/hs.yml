@@ -1,0 +1,27 @@
+
+
+deploy:ngs-admin-web-hs:
+  tags:
+    - idc-runner
+  stage: deploy
+  when: manual
+  needs:
+    - image:build
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^test/
+  environment:
+    name: dev
+  variables:
+    SSH_IP: 140.143.147.197
+    SSH_PORT: 22
+    SSH_NAME: ubuntu
+    DEPLOY_DIR: /data/app/ngs-admin-web
+    SERVER_IP: 10.100.0.11
+    WEB_PORT: 8888
+  script:
+    - chmod +x $PWD/scripts/runner_deploy_image.sh
+    - sh -c "$PWD/scripts/runner_deploy_image.sh $SSH_IP $SSH_PORT $SSH_NAME $DEPLOY_DIR $PWD/ci/common-vars.sh"
+

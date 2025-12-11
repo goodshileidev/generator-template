@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  buildfe:
+    image: "harbor-test.7moor.com:8443/base/node:18.18"
+    working_dir: "/home/data"
+    entrypoint: |
+      bash -c "
+        yarn config set registry https://registry.npmmirror.com/
+        yarn
+      "
+    # 构建
+#    entrypoint: "npm run build"
+    # 调试
+    #entrypoint: "sleep 12345678s"
+    volumes:
+      - ./:/home/data

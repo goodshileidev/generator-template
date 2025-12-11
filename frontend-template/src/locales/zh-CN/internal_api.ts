@@ -1,0 +1,16 @@
+export default {
+  "program.internal_api.internal_api_id":"主键",
+  "program.internal_api.internal_api_name":"内部api名字",
+  "program.internal_api.internal_api_no":"内部api编号",
+  "program.internal_api.internal_api_key":"key",
+  "program.internal_api.module_id":"模块id",
+  "program.internal_api.internal_api_type":"类型",
+  "program.internal_api.basic_description":"概要设计说明",
+  "program.internal_api.basic_description_query_param_list":"query参数",
+  "program.internal_api.table_list":"修改的表以及表字段",
+  "program.internal_api.sql_list":"修改数据用sql,可以是多个sql",
+  "program.internal_api.script_content":"脚本",
+  "program.internal_api.api_template_version":"API代码模版版本",
+  "program.internal_api.api_template_content":"API代码模版内容",
+  "program.internal_api.api_version":"API版本号",
+}

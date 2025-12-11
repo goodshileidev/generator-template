@@ -1,0 +1,22 @@
+.markdown-editor__editpreview {
+  .markdown-editor--inner {
+    display: flex;
+    flex-direction: row;
+  }
+}
+.markdown-editor {
+  & .markdown-editor--inner {
+    height: 100%;
+    overflow: auto;
+  }
+  &.has-toolbar .markdown-editor--inner {
+    height: calc(100% - 40px);
+  }
+}
+.preview-aside--wrapper {
+  overflow: auto;
+}
+.preview-aside--wrapper,
+.edit-aside--wrapper {
+  width: 50%;
+}

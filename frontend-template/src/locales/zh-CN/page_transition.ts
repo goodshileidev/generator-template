@@ -1,0 +1,16 @@
+export default {
+  "ui.page_transition.page_transition_id":"主键",
+  "ui.page_transition.page_transition_name":"转移名称",
+  "ui.page_transition.module_id":"模块id",
+  "ui.page_transition.page_flow_id":"page_flow_id 主键",
+  "ui.page_transition.src_page_id":"转移起点页面",
+  "ui.page_transition.desc_page_id":"转移目标页面",
+  "ui.page_transition.transition_type":"跳转类型, 1.跳转,2.弹出窗口,3.显示隐藏层",
+  "ui.page_transition.trigger_event":"跳转触发事件",
+  "ui.page_transition.basic_description":"概要设计说明",
+  "ui.page_transition.detail_description":"详细设计说明",
+  "ui.page_transition.transition_param_list":"传递的参数",
+  "ui.page_transition.transition_condition_script":"页面跳转条件脚本",
+  "ui.page_transition.transition_condition_list":"页面跳转条件",
+  "ui.page_transition.transition_action_list":"页面跳转时进行的动作",
+}

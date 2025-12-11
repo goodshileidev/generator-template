@@ -1,0 +1,39 @@
+variables:
+  IMAGE: harbor-test.7moor.com:8443/ngs/ngs-admin-web
+  APP_NAME: ngs-admin-web
+
+stages:
+  - yarn
+  - build
+  - deploy
+
+image:yarn:
+  tags:
+    - idc-runner
+  stage: yarn
+  when: manual
+  script:
+    - chmod +x $PWD/scripts/runner_yarn.sh
+    - sh -c "$PWD/scripts/runner_yarn.sh"
+
+image:build:
+  tags:
+    - idc-runner
+  stage: build
+  needs: [] # 表示该任务不依赖于其他任务
+  when: manual
+  only:
+    refs:
+      - branches
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^test/
+  environment:
+    name: dev
+  script:
+    - chmod +x $PWD/scripts/runner_build_image.sh
+    - sh -c "$PWD/scripts/runner_build_image.sh"
+
+
+include:
+  - local: ci/deploy/hs.yml
+  - local: ci/deploy/whdev.yml

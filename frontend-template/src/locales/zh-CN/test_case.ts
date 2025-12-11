@@ -1,0 +1,15 @@
+export default {
+  "test.test_case.test_case_id":"主键",
+  "test.test_case.test_case_no":"数据",
+  "test.test_case.test_phase":"测试类型,1. 开发测试用,2. 结合测试用, 3. 交付验收用",
+  "test.test_case.module_id":"模块id",
+  "test.test_case.function_id":"模块id",
+  "test.test_case.page_list":"测试数据的json",
+  "test.test_case.page_field_list":"测试数据的json",
+  "test.test_case.page_action_list":"测试数据的json",
+  "test.test_case.page_field_action_list":"测试数据的json",
+  "test.test_case.test_case_content":"测试用例详细内容说明，包含详细的测试步骤",
+  "test.test_case.description":"用途目的说明",
+  "test.test_case.test_script_file_name":"测试用脚本文件名称",
+  "test.test_case.script_content":"测试用脚本文件内容",
+}

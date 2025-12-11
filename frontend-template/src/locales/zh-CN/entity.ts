@@ -1,0 +1,16 @@
+export default {
+  "data.entity.entity_id":"实体id",
+  "data.entity.entity_name":"实体名",
+  "data.entity.entity_key":"实体key",
+  "data.entity.ddl_sql_text":"建库sql",
+  "data.entity.module_id":"模块id",
+  "data.entity.conceptual_description":"概念模型的详细设计说明",
+  "data.entity.logical_description":"逻辑模型的详细设计说明",
+  "data.entity.primary_key":"主键名",
+  "data.entity.foreign_key_list":"外键",
+  "data.entity.encoding_str":"编码",
+  "data.entity.collation_str":"排序",
+  "data.entity.table_attr_list":"数据库表属性",
+  "data.entity.primary_key_generate_method":"主键取值方式",
+  "data.entity.primary_key_generator_name":"sequence 名称",
+}

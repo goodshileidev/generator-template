@@ -1,0 +1,16 @@
+export default {
+  "report.report_indicator.report_indicator_id":"主键",
+  "report.report_indicator.report_indicator_name":"指标名",
+  "report.report_indicator.report_indicator_key":"key",
+  "report.report_indicator.demand_description":"需求分析说明",
+  "report.report_indicator.basic_description":"概要设计说明",
+  "report.report_indicator.data_src_table_list":"数据源表",
+  "report.report_indicator.column_list":"需要用到的数据库表字段",
+  "report.report_indicator.expression_text":"计算公式",
+  "report.report_indicator.detail_description":"详细设计说明",
+  "report.report_indicator.sql_structure":"SQL结构",
+  "report.report_indicator.sql_text":"SQL文本",
+  "report.report_indicator.show_type":"展现形式",
+  "report.report_indicator.chart_type":"图表类型",
+  "report.report_indicator.param_list":"传入的参数列表",
+}
