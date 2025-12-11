@@ -1,0 +1,29 @@
+logging:
+  config: "classpath:logging/logback-prod.xml"
+pg:
+  be:
+    jdbc-url: jdbc:postgresql://127.0.0.1:55433/db_test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false&currentSchema=public&search_path=public
+    username: partner
+    password: qweQWE123
+    driver-class-name: org.postgresql.Driver
+    initialSize: 5
+    maxActive: 10
+    minIdle: 5
+
+upload:
+  base-dir: /data/app/upload
+  server-host: http://aidev.tigercloud.com.cn:18843/api
+  category: local
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+third:
+  ocr_server: http://aidev.tigercloud.com.cn:18843/ocr
+
+log:
+  path: /data/logs/be-backend/

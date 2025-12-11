@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- Enable camelCase mapping -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- Enable lazy loading -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- Disable aggressive lazy loading -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- Enable caching -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- Set default executor type -->
+        <setting name="defaultExecutorType" value="REUSE"/>
+        <!-- Set default statement timeout -->
+        <setting name="defaultStatementTimeout" value="25000"/>
+    </settings>
+
+    <typeAliases>
+        <!-- Add type aliases for common packages -->
+        <package name="com.partner.be.common.system.domain"/>
+        <package name="com.partner.be.common.system.vo"/>
+        <package name="com.partner.be.common.system.po"/>
+    </typeAliases>
+
+    <mappers>
+        <!-- Backend mappers -->
+        <mapper resource="mybatis/xml/LoginDao.xml"/>
+        <mapper resource="mybatis/xml/CheckExistDao.xml"/>
+        
+        <!-- PostgreSQL DAO mappers -->
+        <!-- Will be loaded from be-dao-postgres module -->
+    </mappers>
+</configuration>

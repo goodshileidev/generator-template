@@ -1,0 +1,59 @@
+server:
+  jetty:
+    acceptors: 5
+    max-http-form-post-size: 0
+    selectors: 10
+  port: 8002
+  servlet:
+    context-path: /api
+spring:
+  application.name: "@project.artifactId@"
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  application:
+    name: backend
+  profiles:
+    active: "@activatedProperties@"
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  messages:
+    baseNameList:
+      - message/application-messages
+      - ValidationMessages
+myBatis:
+  configLocation: "classpath:/mybatis/spring-mybatis.xml"
+
+security-config:
+  path:
+    authentication-exclude: [ '^.*/login/*','^.*/create','^.*/search','^.*/list','^.*/get','^.*.html','^.*.json' , '^/v2/.*' ]
+    authorization-exclude: [ '^.*/login/*','^.*/create','^.*/search','^.*/list','^.*/get','^.*.html' ,'^.*.json' , '^/v2/.*' ]
+    check-submit-token-exclude: [ '^.*/search','^.*/get','^.*/list','^.*.html' ,'^.*.json' , '^/v2/.*' ]
+
+# JWT Authentication Configuration
+jwt:
+  secret: ${JWT_SECRET:change-me-in-production-use-env-var}
+  issuer: be-app-backend
+  prefix: Bearer
+  header: Authorization
+  expiration-seconds: ${JWT_EXPIRATION_SECONDS:86400}  # 24 hours default
+
+# Security Configuration
+security:
+  password:
+    # BCrypt strength configuration - production environment recommended value
+    bcrypt-strength: 12  # ~300ms, provides good balance between security and user experience
+
+log:
+  path: ./logs/

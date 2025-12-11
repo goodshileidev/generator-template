@@ -1,0 +1,11 @@
+logging:
+  config: "classpath:logging/logback-test.xml"
+pg:
+  be:
+    jdbc-url: jdbc:postgresql://127.0.0.1:55433/postgres?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: test
+    password: qweQWE123
+    driver-class-name: org.postgresql.Driver
+    initialSize: 5
+    maxActive: 10
+    minIdle: 5

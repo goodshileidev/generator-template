@@ -1,0 +1,27 @@
+# be-backend
+dev:be-backend-deploy-hs:
+  tags:
+    - idc-runner
+  stage: deploy
+  when: manual
+  needs:
+    - dev:be-backend-build
+  only:
+    refs:
+      - branches
+    changes:
+      - be-backend/**/*
+      - be-common/**/*
+      - be-parent/**/*
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^test/
+  environment:
+    name: dev
+  variables:
+    SSH_IP: 140.143.147.197
+    SSH_PORT: 22
+    SSH_NAME: ubuntu
+    mavenProfile: hstest
+  script:
+    - chmod +x $PWD/scripts/runner_deploy.sh
+    - sh -c "$PWD/scripts/runner_deploy.sh $SSH_IP $SSH_PORT $SSH_NAME $PWD/ci/dev/common-vars.sh"

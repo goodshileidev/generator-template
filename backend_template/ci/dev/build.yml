@@ -1,0 +1,26 @@
+# be-backend
+dev:be-backend-build:
+  tags:
+    - idc-runner
+  stage: build
+  when: always
+  only:
+    refs:
+      - branches
+    changes:
+      - be-backend/**/*
+      - be-common/**/*
+      - be-parent/**/*
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^test/
+  environment:
+    name: dev
+  script:
+    - chmod +x $PWD/scripts/runner_build_jar.sh
+    - sh -c "$PWD/scripts/runner_build_jar.sh"
+    - chmod +x $PWD/scripts/runner_build_docker.sh
+    - sh -c "$PWD/scripts/runner_build_docker.sh"
+
+include:
+  - local: ci/dev/deploy.yml
+  - local: ci/dev/deploy-hs.yml

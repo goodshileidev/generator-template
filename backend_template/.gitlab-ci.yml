@@ -1,0 +1,14 @@
+#  harbor-test.7moor.com:8443
+#  :$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA
+variables:
+  IMAGE: ${harbor_host}/be/be-backend
+  COTAINER_NAME: be-backend
+
+stages:
+  - build
+  - deploy
+
+
+include:
+  - local: ci/dev/build.yml
+

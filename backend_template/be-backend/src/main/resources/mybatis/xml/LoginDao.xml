@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.partner.be.backend.common.dao.LoginDao">
+
+    <resultMap type="com.partner.be.common.system.vo.OperatorVO" id="operatorVOMap">
+        <result property="companyId" column="company_id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="userRole" column="user_role"/>
+        <result property="lastName" column="last_name"/>
+        <result property="firstName" column="first_name"/>
+        <result property="positionTitle" column="position_title"/>
+        <result property="associatedPhoneNumberVerificationStatus"
+                column="associated_mobile_verification_status"/>
+        <result property="username" column="username"/>
+        <result property="sessionAutoLogoutWaitingTime" column="session_auto_logout_waiting_time"/>
+        <result property="associatedMobileNumber" column="mobile"/>
+        <result property="usageStatus" column="usage_status"/>
+        <result property="associatedEmailVerificationStatus" column="associated_email_verification_status"/>
+        <result property="loginWelcomeMessageSettingStatus" column="login_welcome_message_setting_status"/>
+        <result property="description" column="description"/>
+        <result property="powerStationIds" column="power_station_ids"/>
+        <result property="companyName" column="company_name"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="loginWelcomeMessage" column="login_welcome_message"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <select id="getByUserName"
+            parameterType="com.partner.be.backend.common.po.LoginPO"
+            resultMap="operatorVOMap">
+        select
+        operator.company_id,
+        operator.operator_id,
+        operator.user_role,
+        operator.last_name,
+        operator.first_name,
+        operator.position_title,
+        operator.associated_mobile_verification_status,
+        operator.username,
+        operator.session_auto_logout_waiting_time,
+        operator.mobile,
+        operator.usage_status,
+        operator.associated_email_verification_status,
+        operator.login_welcome_message_setting_status,
+        operator.description,
+        operator.company_name,
+        operator.email,
+        operator.password,
+        operator.login_welcome_message,
+        operator.power_station_ids,
+        operator.created_by,
+        operator.created_at,
+        operator.updated_by,
+        operator.updated_at,
+        operator.is_deleted
+        from t_operator operator
+        <where>
+            is_deleted=0
+            <if test='username != null'>
+                and (operator.username=#{username} or operator.email=#{username})
+            </if>
+        </where>
+        order by updated_at desc
+        limit 1
+    </select>
+
+</mapper>

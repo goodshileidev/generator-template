@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.partner.be.postgres.system.dao.OperatorDao">
+
+    <resultMap type="com.partner.be.common.system.domain.Operator" id="operatorMap">
+        <result property="operatorId" column="operator_id"/>
+        <result property="powerStationName" column="power_station_name"/>
+        <result property="companyCode" column="company_code"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyId" column="company_id"/>
+        <result property="sessionAutoLogoutWaitingTime" column="session_auto_logout_waiting_time"/>
+        <result property="usageStatus" column="usage_status"/>
+        <result property="mobile" column="mobile"/>
+        <result property="associatedMobileVerificationStatus" column="associated_mobile_verification_status"/>
+        <result property="associatedEmailVerificationStatus" column="associated_email_verification_status"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="password" column="password"/>
+        <result property="mobileVerificationCode" column="mobile_verification_code"/>
+        <result property="mobileVerificationCodeSendTime" column="mobile_verification_code_send_time"/>
+        <result property="mobileVerificationCodeVerifiedTime" column="mobile_verification_code_verified_time"/>
+        <result property="description" column="description"/>
+        <result property="username" column="username"/>
+        <result property="userRole" column="user_role"/>
+        <result property="email" column="email"/>
+        <result property="powerStationIds" column="power_station_ids"/>
+        <result property="loginWelcomeMessage" column="login_welcome_message"/>
+        <result property="loginWelcomeMessageSettingStatus" column="login_welcome_message_setting_status"/>
+        <result property="positionTitle" column="position_title"/>
+        <result property="language" column="language"/>
+        <result property="emailVerificationCode" column="email_verification_code"/>
+        <result property="emailVerificationCodeSendTime" column="email_verification_code_send_time"/>
+        <result property="emailVerificationCodeVerifiedTime" column="email_verification_code_verified_time"/>
+
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <resultMap type="com.partner.be.common.system.vo.OperatorVO" id="operatorVOMap">
+        <result property="operatorId" column="operator_id"/>
+        <result property="powerStationName" column="power_station_name"/>
+        <result property="companyCode" column="company_code"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyId" column="company_id"/>
+        <result property="sessionAutoLogoutWaitingTime" column="session_auto_logout_waiting_time"/>
+        <result property="usageStatus" column="usage_status"/>
+        <result property="mobile" column="mobile"/>
+        <result property="associatedMobileVerificationStatus" column="associated_mobile_verification_status"/>
+        <result property="associatedEmailVerificationStatus" column="associated_email_verification_status"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="password" column="password"/>
+        <result property="mobileVerificationCode" column="mobile_verification_code"/>
+        <result property="mobileVerificationCodeSendTime" column="mobile_verification_code_send_time"/>
+        <result property="mobileVerificationCodeVerifiedTime" column="mobile_verification_code_verified_time"/>
+        <result property="description" column="description"/>
+        <result property="username" column="username"/>
+        <result property="userRole" column="user_role"/>
+        <result property="email" column="email"/>
+        <result property="powerStationIds" column="power_station_ids"/>
+        <result property="loginWelcomeMessage" column="login_welcome_message"/>
+        <result property="loginWelcomeMessageSettingStatus" column="login_welcome_message_setting_status"/>
+        <result property="positionTitle" column="position_title"/>
+        <result property="language" column="language"/>
+        <result property="emailVerificationCode" column="email_verification_code"/>
+        <result property="emailVerificationCodeSendTime" column="email_verification_code_send_time"/>
+        <result property="emailVerificationCodeVerifiedTime" column="email_verification_code_verified_time"/>
+
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <select id="getById" resultMap="operatorVOMap">
+        select
+            operator.operator_id,
+            company.company_code,
+            company.company_name,
+            operator.company_id,
+            operator.session_auto_logout_waiting_time,
+            operator.usage_status,
+            operator.mobile,
+            operator.associated_mobile_verification_status,
+            operator.associated_email_verification_status,
+            operator.first_name,
+            operator.last_name,
+            operator.password,
+            operator.mobile_verification_code,
+            operator.mobile_verification_code_send_time,
+            operator.mobile_verification_code_verified_time,
+            operator.description,
+            operator.username,
+            operator.user_role,
+            operator.email,
+            operator.power_station_ids,
+            operator.login_welcome_message,
+            operator.login_welcome_message_setting_status,
+            operator.position_title,
+            operator.language,
+            operator.email_verification_code,
+            operator.email_verification_code_send_time,
+            operator.email_verification_code_verified_time,
+            operator.created_by,
+            operator.created_at,
+            operator.updated_by,
+            operator.updated_at,
+            operator.is_deleted
+        from t_operator operator
+         left join t_company company on operator.company_id = company.company_id
+        where operator.operator_id = #{value}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="operatorId"
+        parameterType="com.partner.be.common.system.domain.Operator">
+        insert into t_operator
+        (
+        <trim suffixOverrides=",">
+        <if test='companyId != null' >
+            company_id,
+        </if>
+        <if test='sessionAutoLogoutWaitingTime != null' >
+            session_auto_logout_waiting_time,
+        </if>
+        <if test='usageStatus != null' >
+            usage_status,
+        </if>
+        <if test='companyName != null' >
+            company_name,
+        </if>
+        <if test='mobile != null' >
+            mobile,
+        </if>
+        <if test='associatedMobileVerificationStatus != null' >
+            associated_mobile_verification_status,
+        </if>
+        <if test='associatedEmailVerificationStatus != null' >
+            associated_email_verification_status,
+        </if>
+        <if test='firstName != null' >
+            first_name,
+        </if>
+        <if test='lastName != null' >
+            last_name,
+        </if>
+        <if test='password != null' >
+            password,
+        </if>
+        <if test='mobileVerificationCode != null' >
+            mobile_verification_code,
+        </if>
+        <if test='mobileVerificationCodeSendTime != null' >
+            mobile_verification_code_send_time,
+        </if>
+        <if test='mobileVerificationCodeVerifiedTime != null' >
+            mobile_verification_code_verified_time,
+        </if>
+        <if test='description != null' >
+            description,
+        </if>
+        <if test='username != null' >
+            username,
+        </if>
+        <if test='userRole != null' >
+            user_role,
+        </if>
+        <if test='email != null' >
+            email,
+        </if>
+        <if test='powerStationIds != null' >
+            power_station_ids,
+        </if>
+        <if test='loginWelcomeMessage != null' >
+            login_welcome_message,
+        </if>
+        <if test='loginWelcomeMessageSettingStatus != null' >
+            login_welcome_message_setting_status,
+        </if>
+        <if test='positionTitle != null' >
+            position_title,
+        </if>
+        <if test='language != null' >
+            language,
+        </if>
+        <if test='emailVerificationCode != null' >
+            email_verification_code,
+        </if>
+        <if test='emailVerificationCodeSendTime != null' >
+            email_verification_code_send_time,
+        </if>
+        <if test='emailVerificationCodeVerifiedTime != null' >
+            email_verification_code_verified_time,
+        </if>
+        <if test='createdBy != null' >
+            created_by,
+        </if>
+        <if test='createdAt != null' >
+            created_at,
+        </if>
+        <if test='updatedBy != null' >
+            updated_by,
+        </if>
+        <if test='updatedAt != null' >
+            updated_at,
+        </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+        <if test='companyId != null' >
+            #{companyId},
+        </if>
+        <if test='powerStationName != null' >
+            #{powerStationName},
+        </if>
+        <if test='sessionAutoLogoutWaitingTime != null' >
+            #{sessionAutoLogoutWaitingTime},
+        </if>
+        <if test='usageStatus != null' >
+            #{usageStatus},
+        </if>
+        <if test='companyName != null' >
+            #{companyName},
+        </if>
+        <if test='mobile != null' >
+            #{mobile},
+        </if>
+        <if test='associatedMobileVerificationStatus != null' >
+            #{associatedMobileVerificationStatus},
+        </if>
+        <if test='associatedEmailVerificationStatus != null' >
+            #{associatedEmailVerificationStatus},
+        </if>
+        <if test='firstName != null' >
+            #{firstName},
+        </if>
+        <if test='lastName != null' >
+            #{lastName},
+        </if>
+        <if test='password != null' >
+            #{password},
+        </if>
+        <if test='mobileVerificationCode != null' >
+            #{mobileVerificationCode},
+        </if>
+        <if test='mobileVerificationCodeSendTime != null' >
+            #{mobileVerificationCodeSendTime},
+        </if>
+        <if test='mobileVerificationCodeVerifiedTime != null' >
+            #{mobileVerificationCodeVerifiedTime},
+        </if>
+        <if test='description != null' >
+            #{description},
+        </if>
+        <if test='username != null' >
+            #{username},
+        </if>
+        <if test='userRole != null' >
+            #{userRole},
+        </if>
+        <if test='email != null' >
+            #{email},
+        </if>
+        <if test='powerStationIds != null' >
+            #{powerStationIds},
+        </if>
+        <if test='loginWelcomeMessage != null' >
+            #{loginWelcomeMessage},
+        </if>
+        <if test='loginWelcomeMessageSettingStatus != null' >
+            #{loginWelcomeMessageSettingStatus},
+        </if>
+        <if test='positionTitle != null' >
+            #{positionTitle},
+        </if>
+        <if test='language != null' >
+            #{language},
+        </if>
+        <if test='emailVerificationCode != null' >
+            #{emailVerificationCode},
+        </if>
+        <if test='emailVerificationCodeSendTime != null' >
+            #{emailVerificationCodeSendTime},
+        </if>
+        <if test='emailVerificationCodeVerifiedTime != null' >
+            #{emailVerificationCodeVerifiedTime},
+        </if>
+        <if test='createdBy != null' >
+            #{createdBy},
+        </if>
+        <if test='createdAt != null' >
+            #{createdAt},
+        </if>
+        <if test='updatedBy != null' >
+            #{updatedBy},
+        </if>
+        <if test='updatedAt != null' >
+            #{updatedAt},
+        </if>
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="com.partner.be.common.system.domain.Operator">
+        update t_operator
+        <set>
+        <trim suffixOverrides=",">
+        <if test='companyId != null' >
+            company_id= #{companyId},
+        </if>
+        <if test='powerStationName != null' >
+            power_station_name= #{powerStationName},
+        </if>
+        <if test='sessionAutoLogoutWaitingTime != null' >
+            session_auto_logout_waiting_time= #{sessionAutoLogoutWaitingTime},
+        </if>
+        <if test='usageStatus != null' >
+            usage_status= #{usageStatus},
+        </if>
+        <if test='companyName != null' >
+            company_name= #{companyName},
+        </if>
+        <if test='mobile != null' >
+            mobile= #{mobile},
+        </if>
+        <if test="associatedEmailVerificationStatus == 'no'" >
+            associated_email_verification_status= #{associatedEmailVerificationStatus},
+            email_verification_code_verified_time = null,
+            <if test='emailVerificationCodeSendTime == null' >
+                email_verification_code_send_time=null,
+            </if>
+            <if test='emailVerificationCode == null' >
+                email_verification_code='',
+            </if>
+        </if>
+        <if test="associatedEmailVerificationStatus == 'yes'" >
+            associated_email_verification_status= #{associatedEmailVerificationStatus},
+            email_verification_code_verified_time = now(),
+        </if>
+        <if test='firstName != null' >
+            first_name= #{firstName},
+        </if>
+        <if test='lastName != null' >
+            last_name= #{lastName},
+        </if>
+        <if test='password != null' >
+            password= #{password},
+        </if>
+        <if test='mobileVerificationCode != null' >
+            mobile_verification_code= #{mobileVerificationCode},
+        </if>
+        <if test='mobileVerificationCodeSendTime != null' >
+            mobile_verification_code_send_time= #{mobileVerificationCodeSendTime},
+        </if>
+        <if test='mobileVerificationCodeVerifiedTime != null' >
+            mobile_verification_code_verified_time= #{mobileVerificationCodeVerifiedTime},
+        </if>
+        <if test='description != null' >
+            description= #{description},
+        </if>
+        <if test='username != null' >
+            username= #{username},
+        </if>
+        <if test='userRole != null' >
+            user_role= #{userRole},
+        </if>
+        <if test='email != null' >
+            email= #{email},
+        </if>
+        <if test='powerStationIds != null' >
+            power_station_ids= #{powerStationIds},
+        </if>
+        <if test='loginWelcomeMessage != null' >
+            login_welcome_message= #{loginWelcomeMessage},
+        </if>
+        <if test='loginWelcomeMessageSettingStatus != null' >
+            login_welcome_message_setting_status= #{loginWelcomeMessageSettingStatus},
+        </if>
+        <if test='positionTitle != null' >
+            position_title= #{positionTitle},
+        </if>
+        <if test='language != null' >
+            language= #{language},
+        </if>
+        <if test='emailVerificationCode != null' >
+            email_verification_code= #{emailVerificationCode},
+        </if>
+        <if test='emailVerificationCodeSendTime != null' >
+            email_verification_code_send_time= #{emailVerificationCodeSendTime},
+        </if>
+        <if test='updatedBy != null' >
+            updated_by=#{updatedBy},
+        </if>
+        <if test='updatedAt != null' >
+            updated_at=#{updatedAt},
+        </if>
+        </trim>
+         </set>
+        where operator_id = #{operatorId}
+    </update>
+
+    <delete id="delete" parameterType="com.partner.be.common.system.po.OperatorPO">
+        update t_operator
+        <set>
+        <if test='updatedBy != null' >
+            updated_by=#{updatedBy},
+        </if>
+        updated_at=now(),
+        is_deleted='1'
+        </set>
+        where operator_id = #{operatorId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,27 @@
+logging:
+  config: "classpath:logging/logback-dev.xml"
+
+pg:
+  be:
+    jdbc-url: jdbc:postgresql://10.1.115.56:5432/db_test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false&stringtype=unspecified
+    username: postgres
+    password: PT123!@#
+    driver-class-name: org.postgresql.Driver
+    initialSize: 5
+    maxActive: 10
+    minIdle: 5
+
+upload:
+  base-dir: ./data
+  server-host: http://localhost:8001/api
+  category: local
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+third:
+  ocr_server: http://127.0.0.1:3001/

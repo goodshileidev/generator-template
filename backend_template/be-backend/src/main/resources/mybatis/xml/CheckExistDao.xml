@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.partner.be.backend.common.dao.CheckExistDao">
+    <resultMap type="com.partner.be.backend.common.vo.CheckExistVO" id="checkExistMap">
+        <result property="keyValue" column="key_value"/>
+    </resultMap>
+    <select id="list"
+            parameterType="com.partner.be.backend.common.po.CheckExistPO"
+            resultMap="checkExistMap">
+        select
+        ${keyColumnName} as key_value
+        from t_${tableName}
+        <where>
+            ${validateColumnName}=#{validateColumnValue}
+        </where>
+    </select>
+    <select id="getExistCount" resultType="java.lang.Integer"
+            parameterType="com.partner.be.backend.common.po.CheckExistPO">
+        select
+        count(1)
+        from t_${tableName}
+        <where>
+            is_deleted=0
+            and ${validateColumnName}=#{validateColumnValue}
+            <if test='foreignKeys != null and foreignKeys.length>0'>
+                and
+                <foreach collection="foreignKeys" item="foreignKey" separator="and" open="(" close=")">
+                    ${foreignKey.columnName} = #{foreignKey.columnValue}
+                </foreach>
+                and ${keyColumnName}!=#{keyValue}
+            </if>
+            <if test='keyValue != null'>
+                and ${keyColumnName}!=#{keyValue}
+            </if>
+        </where>
+    </select>
+</mapper>

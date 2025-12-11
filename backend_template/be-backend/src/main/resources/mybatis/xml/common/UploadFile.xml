@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.partner.be.backend.common.dao.UploadFileDao">
+
+    <resultMap type="com.partner.be.backend.common.domain.UploadFile" id="entityMap">
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+
+        <result property="fileType" column="file_type"/>
+        <result property="size" column="size"/>
+        <result property="filePath" column="file_path"/>
+        <result property="bizCategory" column="biz_category"/>
+        <result property="storage" column="storage"/>
+        <result property="mimeType" column="mime_type"/>
+
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="fileId"
+            parameterType="com.partner.be.backend.common.domain.UploadFile">
+        insert into t_upload_file
+        (
+        <trim suffixOverrides=",">
+            file_name,file_type,size,file_path,biz_category,storage,
+            <if test='mimeType != null'>
+                mime_type,
+            </if>
+            <if test='createdBy != null'>
+                created_by,
+            </if>
+            <if test='createdAt != null'>
+                created_at,
+            </if>
+            <if test='updatedBy != null'>
+                updated_by,
+            </if>
+            <if test='updatedAt != null'>
+                updated_at,
+            </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+            #{fileName},#{fileType},#{size},#{filePath},#{bizCategory},#{storage},
+            <if test='mimeType != null'>
+                #{mimeType},
+            </if>
+
+            <if test='createdBy != null'>
+                #{createdBy},
+            </if>
+            <if test='createdAt != null'>
+                #{createdAt},
+            </if>
+            <if test='updatedBy != null'>
+                #{updatedBy},
+            </if>
+            <if test='updatedAt != null'>
+                #{updatedAt},
+            </if>
+        </trim>
+        )
+    </insert>
+
+
+    <select id="getById"
+            resultMap="entityMap">
+        select
+            file.*
+        from t_upload_file file
+        where file.file_id = #{value}
+    </select>
+
+</mapper>
