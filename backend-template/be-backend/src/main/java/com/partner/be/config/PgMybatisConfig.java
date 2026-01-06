@@ -31,6 +31,7 @@ import javax.sql.DataSource;
         "com.partner.be.backend.data.dao",
         "com.partner.be.backend.system.dao",
         "com.partner.be.backend.management.dao",
+        "com.partner.be.postgres.system.dao",
         "com.partner.helper.backend.common.dao"
 },
         sqlSessionFactoryRef = "pgSqlSessionFactory")
