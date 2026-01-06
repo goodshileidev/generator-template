@@ -48,6 +48,12 @@ export default [
         component: './user/login',
       },
       {
+        path: '/user/reset-password',
+        layout: false,
+        name: 'reset-password',
+        component: './user/reset-password',
+      },
+      {
         path: '/user',
         redirect: '/user/login',
       },

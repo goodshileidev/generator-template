@@ -21,16 +21,18 @@ declare namespace API {
   };
 
   type LoginResult = {
-    status?: string;
-    type?: string;
-    currentAuthority?: string;
+    code?: number;
+    message?: string;
+    success?: boolean;
+    data?: CurrentUser;
   };
 
   type LoginParams = {
     username?: string;
     password?: string;
+    captchaId?: string;
+    captchaCode?: string;
     autoLogin?: boolean;
-    type?: string;
   };
 
   type FakeCaptcha = {

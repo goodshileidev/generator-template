@@ -12,6 +12,64 @@ const useStyles = createStyles(({token}) => {
         flexDirection: 'column-reverse',
       },
     },
+    infoStack: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      width: '100%',
+    },
+    helperAlert: {
+      borderRadius: token.borderRadiusLG,
+    },
+    infoCard: {
+      width: '100%',
+      padding: '20px',
+      background: token.colorBgContainer,
+      borderRadius: token.borderRadiusLG,
+      border: `${token.lineWidth}px solid ${token.colorSplit}`,
+      boxShadow: token.boxShadowTertiary,
+    },
+    cardHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      gap: '16px',
+      flexWrap: 'wrap',
+    },
+    cardTitle: {
+      fontSize: token.fontSizeLG,
+      fontWeight: 600,
+      color: token.colorText,
+    },
+    cardDescription: {
+      marginBottom: 0,
+      color: token.colorTextSecondary,
+    },
+    cardStatusRow: {
+      marginTop: '16px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+    },
+    cardValue: {
+      fontSize: token.fontSizeLG,
+      color: token.colorText,
+    },
+    warningIcon: {
+      fontSize: '28px',
+      color: token.colorWarning,
+    },
+    mailIcon: {
+      fontSize: '28px',
+    },
+    verifiedIcon: {
+      color: token.colorSuccess,
+    },
+    pendingIcon: {
+      color: token.colorWarning,
+    },
+    statusTag: {
+      marginInlineEnd: 0,
+    },
     left: {
       minWidth: '224px',
       maxWidth: '448px',

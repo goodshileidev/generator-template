@@ -1,7 +1,10 @@
 import {localizeCodeList} from '@/common/code_list/code_list_static';
 import {AvatarDropdown, AvatarName, Footer, Question, SelectLang} from '@/components';
+import {getCurrentUser as fetchCurrentUser} from '@/common/service/login';
+import {clearCurrentUser, getCurrentUser as getCachedUser, setCurrentUser} from '@/common/util/user_storage';
 import i18n from '@/lang/i18n';
 import {concatUrls} from '@/utils';
+import {getToken, removeToken} from '@/utils/jwt';
 import {LinkOutlined} from '@ant-design/icons';
 import type {Settings as LayoutSettings} from '@ant-design/pro-components';
 import {SettingDrawer} from '@ant-design/pro-components';
@@ -32,77 +35,36 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      // const msg = await queryCurrentUser({
-      //   skipErrorHandler: true,
-      // });
-      // return msg.data;
-      return {
-        name: 'Serati Ma',
-        avatar: './avatar.png',
-        userid: '00000001',
-        email: 'antdesign@alipay.com',
-        signature: '海纳百川，有容乃大',
-        title: '交互专家',
-        group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
-        tags: [
-          {
-            key: '0',
-            label: '很有想法的',
-          },
-          {
-            key: '1',
-            label: '专注设计',
-          },
-          {
-            key: '2',
-            label: '辣~',
-          },
-          {
-            key: '3',
-            label: '大长腿',
-          },
-          {
-            key: '4',
-            label: '川妹子',
-          },
-          {
-            key: '5',
-            label: '海纳百川',
-          },
-        ],
-        notifyCount: 12,
-        unreadCount: 11,
-        country: 'China',
-        geographic: {
-          province: {
-            label: '浙江省',
-            key: '330000',
-          },
-          city: {
-            label: '杭州市',
-            key: '330100',
-          },
-        },
-        address: '西湖区工专路 77 号',
-        phone: '0752-268888888',
-      };
+      const response = await fetchCurrentUser();
+      const user = response?.data as API.CurrentUser;
+      if (user) {
+        setCurrentUser(user);
+        return user;
+      }
     } catch (error) {
+      removeToken();
+      clearCurrentUser();
       history.push(loginPath);
     }
     return undefined;
   };
-  // 如果不是登录页面，执行
+
+  const token = getToken();
+  const cachedUser = getCachedUser() as API.CurrentUser | undefined;
   const {location} = history;
-  if (![loginPath, '/user/register', '/user/register-result'].includes(location.pathname)) {
-    const currentUser = await fetchUserInfo();
+
+  if (token && ![loginPath, '/user/register', '/user/register-result'].includes(location.pathname)) {
+    const currentUser = cachedUser || (await fetchUserInfo());
     return {
       fetchUserInfo,
       currentUser,
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
+
   return {
     fetchUserInfo,
+    currentUser: cachedUser,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
@@ -197,6 +159,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request: RequestConfig = {
-  baseURL: 'https://proapi.azurewebsites.net',
+  baseURL: '/api',
   ...errorConfig,
 };

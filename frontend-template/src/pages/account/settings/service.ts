@@ -2,7 +2,9 @@ import {request} from '@umijs/max';
 import type {CurrentUser, GeographicItemType} from './data';
 
 export async function queryCurrent(): Promise<{ data: CurrentUser }> {
-  return request('/api/accountSettingCurrentUser');
+  return request('/currentUser', {
+    method: 'POST',
+  });
 }
 
 export async function queryProvince(): Promise<{ data: GeographicItemType[] }> {

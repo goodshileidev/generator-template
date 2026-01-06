@@ -1,72 +1,116 @@
-import type {AxiosInstance} from 'axios'
-import axios from "axios";
-import {message} from 'antd'
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
+import {message, notification} from 'antd';
+import {clearCurrentUser} from '@/common/util/user_storage';
+import {getToken, removeToken, setToken} from '@/utils/jwt';
 
-export const baseUrl = '/api'
+export const baseUrl = '/api';
+
+export enum ErrorShowType {
+  SILENT = 0,
+  WARN_MESSAGE = 1,
+  ERROR_MESSAGE = 2,
+  NOTIFICATION = 3,
+  REDIRECT = 9,
+}
+
+export interface ResponseStructure<T = any> {
+  success?: boolean;
+  code?: number;
+  data?: T;
+  message?: string;
+  showType?: ErrorShowType;
+}
+
 const instance: AxiosInstance = axios.create({
   baseURL: baseUrl,
-  timeout: 600000,
+  timeout: 60000,
   responseType: 'json',
   headers: {
     'Content-Type': 'application/json',
   },
-})
-instance.interceptors.request.use((request: any) => {
-  // 在请求发送之前做一些处理，比如token
-  let token = localStorage.getItem("token")
-  if (token === null) {
-    token = "test"
-  }
-  request.headers['token'] = token
-  const projectId = window.localStorage.getItem('projectId')
-  if (projectId && request.data) {
-    if (request.url.indexOf("/create") > -1 || request.url.indexOf("/save") > -1 || request.url.indexOf("Save") > -1 || request.url.indexOf("Create") > -1) {
-      request.data.projectId = projectId
-    } else {
-      request.data.projectIdCondition = projectId
-    }
-  }
-  console.debug("before request", request)
-  return request
-}, (error: any) => {
-  // 处理错误
-  return Promise.reject(error)
-})
+});
 
-/**
- * 在响应返回之前做一些处理
- */
-instance.interceptors.response.use((response: any) => {
-  console.debug("before response succeed", response)
-  // 弹出显示info
-  if (response.data.message !== null && response.data.message !== '') {
-    if (response.data.code !== 200) {
-      message.error(response.data.message)
-    } else {
-      // TODO 成功弹框不能放这里，放到页面ui部分
-      // message.success(response.data.msg)
-    }
+const redirectToLogin = () => {
+  if (window.location.pathname !== '/user/login') {
+    window.location.href = '/user/login';
   }
-  let token = response.data.token
-  // 从response取token并保存
-  localStorage.setItem("token", token)
-  return response
-}, (commit: any) => {
-  const response = commit.response
-  console.debug("before response failed", response)
-  // 处理错误
-  if (response.status !== 200) {
-    message.error(response.status + ":" + response.statusText)
-  }
-  let token = response.data.token
-  // 从response取token并保存
-  localStorage.setItem("token", token)
-  return Promise.reject(response)
-})
+};
 
-// 异常token过期 重定向到 login
-export default (req: any) => {
-  return instance(req).then((res: any) => {
-    return res.data
-  })
-}
+instance.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    const token = getToken();
+    if (token && config.headers) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (config.data && typeof config.data === 'object') {
+      const language = window.localStorage.getItem('lang');
+      if (language) {
+        (config.data as Record<string, any>).language = language;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
+instance.interceptors.response.use(
+  (response: AxiosResponse<ResponseStructure>) => {
+    const authHeader = response.headers?.authorization || response.headers?.Authorization;
+    if (authHeader) {
+      const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : authHeader;
+      setToken(token);
+    }
+
+    const skipErrorHandler = response.config?.skipErrorHandler === true;
+    const payload = response.data;
+    if (payload && payload.success === false && !skipErrorHandler) {
+      const displayMessage = payload.message || 'Request failed';
+      switch (payload.showType) {
+        case ErrorShowType.WARN_MESSAGE:
+          message.warning(displayMessage);
+          break;
+        case ErrorShowType.ERROR_MESSAGE:
+          message.error(displayMessage);
+          break;
+        case ErrorShowType.NOTIFICATION:
+          notification.error({
+            message: `Error ${payload.code || ''}`.trim(),
+            description: displayMessage,
+          });
+          break;
+        default:
+          message.error(displayMessage);
+      }
+      return Promise.reject(new Error(displayMessage));
+    }
+
+    return response;
+  },
+  (error) => {
+    const skipErrorHandler = error?.config?.skipErrorHandler === true;
+    if (skipErrorHandler) {
+      return Promise.reject(error);
+    }
+
+    const {response} = error || {};
+    if (response) {
+      const {status, data} = response;
+      if (status === 401 || status === 403) {
+        message.error('Session expired, please login again');
+        removeToken();
+        clearCurrentUser();
+        redirectToLogin();
+        return Promise.reject(error);
+      }
+      const displayMessage = data?.message || `Request failed (${status})`;
+      message.error(displayMessage);
+    } else {
+      message.error('Network error, please retry');
+    }
+    return Promise.reject(error);
+  },
+);
+
+export default <T = any>(req: AxiosRequestConfig): Promise<ResponseStructure<T>> => {
+  return instance(req).then((res) => res.data as ResponseStructure<T>);
+};
